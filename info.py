@@ -37,7 +37,7 @@ DATABASE_NAME = environ.get('DATABASE_NAME', "VijayTG)
 COLLECTION_NAME = environ.get('COLLECTION_NAME', 'Telegram_files')
 
 # Others
-LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1001509130340'))
+LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1001653852670'))
 SUPPORT_CHAT = environ.get('SUPPORT_CHAT', 'VijayTG_support')
 P_TTI_SHOW_OFF = is_enabled((environ.get('P_TTI_SHOW_OFF', "True")), True)
 IMDB = is_enabled((environ.get('IMDB', "True")), True)
