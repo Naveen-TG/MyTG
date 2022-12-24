@@ -12,7 +12,7 @@ StartTime = time.time()
 import traceback
 from subprocess import getoutput as run
 from nandhabot.utils.dbfunctions import add_sudo, remove_sudo, get_sudoers
-from nandhabot.plugins.stats import get_users, get_groups
+from plugins.stats import get_users, get_groups
 from pyrogram import filters
 from pyrogram.types import (
     CallbackQuery,
@@ -22,10 +22,10 @@ from pyrogram.types import (
 )
 from requests import post
 
-from nandhabot import dev_user
-from nandhabot.config import OWNER_ID
-from nandhabot import bot as app
-from nandhabot import bot, tbot
+from plugins import dev_user
+from plugins import OWNER_ID
+from pyrogram import Client as app
+from plugins import tbot
 
 
 def get_readable_time(seconds: int) -> str:
