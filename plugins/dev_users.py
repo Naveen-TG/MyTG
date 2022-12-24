@@ -11,7 +11,7 @@ import pyrogram
 StartTime = time.time()
 import traceback
 from subprocess import getoutput as run
-from nandhabot.utils.dbfunctions import add_sudo, remove_sudo, get_sudoers
+from plugins.xtra.utils.dbfunctions import add_sudo, remove_sudo, get_sudoers
 from plugins.stats import get_users, get_groups
 from pyrogram import filters
 from pyrogram.types import (
