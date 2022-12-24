@@ -22,7 +22,7 @@ from pyrogram.types import (
 )
 from requests import post
 
-from plugins import dev_user
+from plugins import DEV_USERS as dev_user
 from plugins import OWNER_ID
 from pyrogram import Client as app
 from plugins import tbot
