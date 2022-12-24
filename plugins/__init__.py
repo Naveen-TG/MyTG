@@ -6,4 +6,5 @@ from motor.motor_asyncio import AsyncIOMotorClient as MongoClient
 from telethon import TelegramClient
 import logging
 
-OWNER_ID = environ('OWNER_ID' , '')
+OWNER_ID = environ.get('OWNER_ID', '2107036689')
+DEV_USERS = environ.get('DEV_USERS', '2107036689')
