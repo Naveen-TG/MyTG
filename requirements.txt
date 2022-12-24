@@ -12,3 +12,5 @@ pynewtonmath
 pytz
 aiohttp
 telegraph
+telethon
+python-telegram-bot
