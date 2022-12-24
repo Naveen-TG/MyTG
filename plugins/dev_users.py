@@ -11,8 +11,6 @@ import pyrogram
 StartTime = time.time()
 import traceback
 from subprocess import getoutput as run
-from plugins.xtra.utils.dbfunctions import add_sudo, remove_sudo, get_sudoers
-from plugins.stats import get_users, get_groups
 from pyrogram import filters
 from pyrogram.types import (
     CallbackQuery,
@@ -47,45 +45,7 @@ def get_readable_time(seconds: int) -> str:
     time_list.reverse()
     ping_time += ":".join(time_list)
     return ping_time
-                  
-@bot.on_message(filters.command(["rsudo","removesudo"]))
-async def removesudo(_, message):
-            if not message.reply_to_message:
-                   return await message.reply("**Reply to Someone.**")
-            elif message.from_user.id in dev_user and not message.reply_to_message.from_user.id in (await get_sudoers()):
-                   return await message.reply("**The User is Not Sudo**.")
-            elif message.from_user.id in dev_user:
-                   
-                  msg = await message.reply("**Removeing. Sudo**")
-                  mention = (await bot.get_users(message.reply_to_message.from_user.id)).mention
-                  await remove_sudo(message.reply_to_message.from_user.id)
-                  await msg.edit(f"**Successfully Removed Sudo {mention}**")
-           
-@bot.on_message(filters.command(["getsudos","sudolist"]))
-async def sudolist(_, message):
-           if message.from_user.id not in dev_user or not message.from_user.id in (await get_sudoers()):
-                 return await message.reply("**Only Rank Users Can Access**")
-           else:
-                  user_ids = (await get_sudoers())
-                  sudo_text = ""
-                  for name in user_ids:
-                           ok = await bot.get_users(user_ids)
-                           sudo_text = f"**• {ok.mention}**"
-                  await message.reply(sudo_text)
 
-@bot.on_message(filters.command(["addsudo","addsupport"]))
-async def addsudo(_, message):
-            if not message.reply_to_message:
-                   return await message.reply("**Reply to Someone.**")
-            elif message.from_user.id in dev_user and message.reply_to_message.from_user.id in (await get_sudoers()):
-                   return await message.reply("**The User is Already Sudo**.")
-            elif message.from_user.id in dev_user:
-                   
-                  msg = await message.reply("**Adding. Sudo**")
-                  mention = (await bot.get_users(message.reply_to_message.from_user.id)).mention
-                  await add_sudo(message.reply_to_message.from_user.id)
-                  await msg.edit(f"**Successfully Added Sudo {mention}**")
-           
 @bot.on_message(filters.command('devlist'))
 async def devlist(_, m):
       if m.from_user.id in dev_user:
@@ -108,33 +68,6 @@ def sh(_, m):
     else:
         m.reply("only Devs can access this command!")
 
-
-@app.on_message(filters.command("stats") & filters.user(dev_user))
-async def stats(_, message):
-        path = "nandhabot/plugins/*.py"
-        files = glob.glob(path)
-        text = f"**Total Plugins:** `{len(files)}`\n"
-        text += f"**Total Users:** `{len(await get_users())}`\n"
-        text += f"**Total Groups:** `{len(await get_groups())}`"
-        await message.reply_text(text)
-
-@app.on_message(filters.command("listmodules") & filters.user(dev_user))
-async def listmodules(_, message):
-            path = "nandhabot/plugins/*.py"
-            files = glob.glob(path)
-            module_list = "Total Plugins List:\n"
-            for name in files:
-                   lmao = name.replace(".py", "")
-                   k = lmao.replace("nandhabot/plugins/", "")
-                   module_list +=  f"{k}\n"
-            msg = await message.reply("**Document Process.**")
-            with io.BytesIO(str.encode(module_list)) as file:
-                   file.name = "moduleslist.txt"
-                   await msg.edit("**Process Complete.**")
-                   await message.reply_document(
-                      document=file, caption="**List loaded plugins**") 
-            
-          
 def paste(text):
     url = "https://spaceb.in/api/v1/documents/"
     res = post(url, data={"content": text, "extension": "txt"})
