@@ -81,3 +81,5 @@ if SELF_DELETE == "True":
     # A Download Tutorial Button #
 DOWNLOAD_TEXT_NAME = "📥 HOW TO DOWNLOAD 📥"
 DOWNLOAD_TEXT_URL = "https://t.me/download_from_search_zone_bot"
+
+aiohttpsession = ClientSession()
