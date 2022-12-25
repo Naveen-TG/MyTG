@@ -1,53 +1,51 @@
 import os
-from pyrogram import Client, filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message, CallbackQuery
+import telegraph
+from info import DEV_USERS as dev_user
+from pyrogram import filters
+from pyrogram.types import Message
+from pyrogram.types.bots_and_keyboards.inline_keyboard_button import InlineKeyboardButton
+from pyrogram.types.bots_and_keyboards.inline_keyboard_markup import InlineKeyboardMarkup
+from pyrogram import Client as app
 from telegraph import upload_file
 
-@Client.on_message(filters.command(["tgmedia", "tgraph", "telegraph"]))
-async def telegraph(client, message):
-    replied = message.reply_to_message
-    if not replied:
-        await message.reply("Reply to a supported media file")
-        return
-    if not (
-        (replied.photo and replied.photo.file_size <= 5242880)
-        or (replied.animation and replied.animation.file_size <= 5242880)
-        or (
-            replied.video
-            and replied.video.file_name.endswith(".mp4")
-            and replied.video.file_size <= 5242880
-        )
-        or (
-            replied.document
-            and replied.document.file_name.endswith(
-                (".jpg", ".jpeg", ".png", ".gif", ".mp4"),
-            )
-            and replied.document.file_size <= 5242880
-        )
-    ):
-        await message.reply("Not supported!")
-        return
-    download_location = await client.download_media(
-        message=message.reply_to_message,
-        file_name="root/downloads/",
+@app.on_message(filters.command("txt"))
+async def txt(_, message: Message):
+    reply = message.reply_to_message
+
+    if not reply or not reply.text:
+        return await message.reply("Reply to a text message")
+
+    if len(message.command) < 2:
+        return await message.reply("**Usage:**\n /txt [Page name]")
+
+    page_name = message.text.split(None, 1)[1]
+    page = telegraph.create_page(
+        page_name, html_content=(reply.text.html).replace("\n", "<br>")
     )
-    try:
-        response = upload_file(download_location)
-    except Exception as document:
-        await message.reply(message, text=document)
-    else:
-        await message.reply(
-            f"<b>Link:-</b>\n\n <code>https://telegra.ph{response[0]}</code>",
-            quote=True,
-            reply_markup=InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton(text="open link", url=f"https://telegra.ph{response[0]}"),
-                    InlineKeyboardButton(text="share link", url=f"https://telegram.me/share/url?url=https://telegra.ph{response[0]}")
-                ],
-                [InlineKeyboardButton(text="✗ Close ✗", callback_data="close_data")]
-            ]
-        )
+    return await message.reply(
+        f"**Posted:** {page['url']}",reply_markup=InlineKeyboardMarkup([ 
+        [InlineKeyboardButton('View 💫' , url=f"{page['url']}")]
+    ]),disable_web_page_preview=True,
     )
-    finally:
-        os.remove(download_location)
+        
+
+@app.on_message(filters.command('tm'))
+def tm(_,message):
+    reply = message.reply_to_message
+    if not reply:
+          return message.reply_text("Reply to a **Media** to get a permanent telegra.ph link.")
+    if reply.text:
+          return message.reply_text("Reply to a **Media** to get a permanent telegra.ph link.")
+    msg = message.reply_text("downloading")
+    if reply.media:
+        path = reply.download()
+        fk = upload_file(path)
+        for x in fk:
+           url = "https://telegra.ph" + x
+    msg.edit("uploading")
+    buttons = [[InlineKeyboardButton('View 💫' , url=f"{url}")]] 
+    if url.endswith("jpg"):
+             message.reply_photo(url,caption=f"{url}",reply_markup=InlineKeyboardMarkup(buttons))
+    elif url.endswith("mp4"):
+             message.reply_animation(url,caption=f"{url}",reply_markup=InlineKeyboardMarkup(buttons))
+    msg.delete()
