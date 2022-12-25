@@ -8,8 +8,10 @@ umongo==3.0.1
 requests
 bs4
 heroku3
+jikanpy
 pynewtonmath
 pytz
+safoneapi
 aiohttp
 telegraph
 telethon
