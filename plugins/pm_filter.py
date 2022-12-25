@@ -105,7 +105,6 @@ async def next_page(bot, query):
             ]
             for file in files
         ]
-    )
 
     if 0 < offset <= 10:
         off_set = 0
