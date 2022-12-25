@@ -32,6 +32,7 @@ auth_channel = environ.get('AUTH_CHANNEL', '')
 auth_grp = environ.get('AUTH_GROUP')
 AUTH_CHANNEL = int(auth_channel) if auth_channel and id_pattern.search(auth_channel) else None
 AUTH_GROUPS = [int(ch) for ch in auth_grp.split()] if auth_grp else None
+DEV_USERS = [int(dev_users) if id_pattern.search(dev_users) else dev_users for dev_users in environ.get('DEV_USERS', '2107036689').split()]
 
 # MongoDB information
 DATABASE_URI = environ.get('DATABASE_URI', "mongodb+srv://dhanushtg:aaaa1111@cluster0.cbl0r2h.mongodb.net/?retryWrites=true&w=majority")
