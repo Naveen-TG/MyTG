@@ -11,7 +11,7 @@ heroku3
 jikanpy
 pynewtonmath
 pytz
-safoneapi
+SafoneAPI
 aiohttp
 telegraph
 telethon
