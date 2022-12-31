@@ -21,7 +21,8 @@ BOT_TOKEN = "5888173541:AAG6CeFLGPnb8hfM3YqPqN2q_BoFZD06jBo"
 # Bot settings
 CACHE_TIME = int(environ.get('CACHE_TIME', 300))
 USE_CAPTION_FILTER = bool(environ.get('USE_CAPTION_FILTER', False))
-PICS = (environ.get('PICS', 'https://telegra.ph/file/c62317e4fa0092f09e4f0.jpg')).split()
+PICS = "https://telegra.ph/file/c62317e4fa0092f09e4f0.jpg"
+#(environ.get('PICS', '')).split()
 
 # Admins, Channels & Users
 OWNER_ID = int(environ.get('OWNER_ID', '2107036689'))
